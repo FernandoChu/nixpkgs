@@ -21,7 +21,6 @@
 , libopus
 , libaom
 , libxkbcommon
-, libsciter
 , xdotool
 , pam
 , pango
@@ -129,14 +128,11 @@ rustPlatform.buildRustPackage rec {
     alsa-lib
   ];
 
-  # Add static ui resources and libsciter to same folder as binary so that it
-  # can find them.
+  # Add static ui resources to same folder as binary so that it can find them.
   postInstall = ''
     mkdir -p $out/{share/src,lib/rustdesk}
 
-    # .so needs to be next to the executable
     mv $out/bin/rustdesk $out/lib/rustdesk
-    ln -s ${libsciter}/lib/libsciter-gtk.so $out/lib/rustdesk
 
     makeWrapper $out/lib/rustdesk/rustdesk $out/bin/rustdesk \
       --chdir "$out/share"
